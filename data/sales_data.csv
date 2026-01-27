@@ -1,0 +1,13 @@
+date,product_id,category,price,quantity_sold
+2024-01-01,P001,Electronics,25000,5
+2024-01-02,P001,Electronics,25000,7
+2024-01-03,P001,Electronics,24000,10
+2024-01-01,P002,Clothing,1500,20
+2024-01-02,P002,Clothing,1500,18
+2024-01-03,P002,Clothing,1400,25
+2024-01-01,P003,Groceries,200,50
+2024-01-02,P003,Groceries,200,55
+2024-01-03,P003,Groceries,180,65
+2024-01-04,P001,Electronics,24000,8
+2024-01-04,P002,Clothing,1400,22
+2024-01-04,P003,Groceries,180,70

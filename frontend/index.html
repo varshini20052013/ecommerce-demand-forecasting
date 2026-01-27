@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Demand Forecasting</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #90caf9;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            background-color: #2c2c2c;
+            color: #ffffff;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            color: #81c784;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Demand Forecasting</h2>
+
+        <label>Product ID</label>
+        <select id="product_id">
+            <option value="P001">P001</option>
+            <option value="P002">P002</option>
+            <option value="P003">P003</option>
+        </select>
+
+        <label>Category</label>
+        <select id="category">
+            <option value="Electronics">Electronics</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Groceries">Groceries</option>
+        </select>
+
+        <label>Price</label>
+        <input type="number" id="price">
+
+        <label>Day</label>
+        <input type="number" id="day">
+
+        <label>Month</label>
+        <input type="number" id="month">
+
+        <label>Day of Week (0 = Monday)</label>
+        <input type="number" id="day_of_week">
+
+        <button onclick="predict()">Predict Demand</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function predict() {
+            fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    product_id: document.getElementById("product_id").value,
+                    category: document.getElementById("category").value,
+                    price: Number(document.getElementById("price").value),
+                    day: Number(document.getElementById("day").value),
+                    month: Number(document.getElementById("month").value),
+                    day_of_week: Number(document.getElementById("day_of_week").value)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText =
+                    "Predicted Quantity Sold: " + data.predicted_quantity_sold;
+            });
+        }
+    </script>
+
+</body>
+</html>
