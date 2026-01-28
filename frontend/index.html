@@ -1,133 +1,342 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Demand Forecasting</title>
+    <meta charset="UTF-8">
+    <title>DemandSense AI</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #121212;
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1f3c4a, #0b1c24);
+            font-family: "Segoe UI", sans-serif;
             color: #e0e0e0;
-            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
         }
 
-        .card {
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 12px;
-            width: 350px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        .app {
+            width: 480px;
+            background: #151515;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
         }
 
-        h2 {
+        h1 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #90caf9;
+            margin: 0;
+            color: #4fc3f7;
         }
 
-        label {
-            display: block;
-            margin-top: 12px;
+        .subtitle {
+            text-align: center;
+            margin: 6px 0 24px;
+            color: #9fb3bd;
             font-size: 14px;
         }
 
-        input, select {
+        /* PRODUCTS */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .product {
+            background: #222;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .product:hover {
+            background: #2a2a2a;
+            transform: translateY(-4px) scale(1.03);
+        }
+
+        .product.active {
+            border-color: #4fc3f7;
+            background: #1c2c34;
+            animation: pop 0.25s ease;
+        }
+
+        .product span {
+            display: block;
+            font-size: 26px;
+            margin-bottom: 4px;
+        }
+
+        /* INPUTS */
+        label {
+            font-size: 13px;
+            color: #b0bec5;
+            margin-top: 14px;
+            display: block;
+        }
+
+        input {
             width: 100%;
-            padding: 8px;
             margin-top: 6px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 10px;
             border: none;
             outline: none;
-            background-color: #2c2c2c;
-            color: #ffffff;
+            background: #262626;
+            color: white;
+            font-size: 14px;
         }
 
         button {
             width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #1976d2;
-            color: white;
+            margin-top: 22px;
+            padding: 14px;
+            border-radius: 14px;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
             cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            background: linear-gradient(90deg, #4fc3f7, #29b6f6);
+            transition: transform 0.15s ease;
         }
 
-        button:hover {
-            background-color: #1565c0;
+        button:active {
+            transform: scale(0.97);
         }
 
-        #result {
-            margin-top: 20px;
+        /* RESULT */
+        .result {
+            margin-top: 22px;
+            padding: 14px;
+            background: #1f2a30;
+            border-radius: 14px;
             text-align: center;
-            color: #81c784;
-            font-size: 18px;
+            opacity: 0;
+        }
+
+        .result.show {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #000;
+        }
+
+        /* CHART */
+        .chart-box {
+            margin-top: 22px;
+            background: #101010;
+            border-radius: 14px;
+            padding: 12px;
+            height: 260px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 12px;
+            color: #8fa3ad;
+        }
+
+        /* ANIMATIONS */
+        @keyframes pop {
+            0% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="card">
-        <h2>Demand Forecasting</h2>
+<div class="app">
 
-        <label>Product ID</label>
-        <select id="product_id">
-            <option value="P001">P001</option>
-            <option value="P002">P002</option>
-            <option value="P003">P003</option>
-        </select>
+    <h1>📊 PRODUCT DEMAND</h1>
+    <div class="subtitle">Product-Aware Demand Forecasting</div>
 
-        <label>Category</label>
-        <select id="category">
-            <option value="Electronics">Electronics</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Groceries">Groceries</option>
-        </select>
+    <!-- PRODUCTS -->
+    <div class="products">
+        <div class="product" onclick="selectProduct(this,'P001','Electronics')"><span>📱</span>Phone</div>
+        <div class="product" onclick="selectProduct(this,'P001','Electronics')"><span>💻</span>Laptop</div>
+        <div class="product" onclick="selectProduct(this,'P001','Electronics')"><span>🎧</span>Audio</div>
 
-        <label>Price</label>
-        <input type="number" id="price">
+        <div class="product" onclick="selectProduct(this,'P002','Clothing')"><span>👕</span>T-Shirt</div>
+        <div class="product" onclick="selectProduct(this,'P002','Clothing')"><span>👟</span>Shoes</div>
+        <div class="product" onclick="selectProduct(this,'P002','Clothing')"><span>🧥</span>Jacket</div>
 
-        <label>Day</label>
-        <input type="number" id="day">
-
-        <label>Month</label>
-        <input type="number" id="month">
-
-        <label>Day of Week (0 = Monday)</label>
-        <input type="number" id="day_of_week">
-
-        <button onclick="predict()">Predict Demand</button>
-
-        <div id="result"></div>
+        <div class="product" onclick="selectProduct(this,'P003','Groceries')"><span>🥦</span>Veggies</div>
+        <div class="product" onclick="selectProduct(this,'P003','Groceries')"><span>🥛</span>Milk</div>
+        <div class="product" onclick="selectProduct(this,'P003','Groceries')"><span>🍞</span>Bread</div>
     </div>
 
-    <script>
-        function predict() {
-            fetch("http://127.0.0.1:5000/predict", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    product_id: document.getElementById("product_id").value,
-                    category: document.getElementById("category").value,
-                    price: Number(document.getElementById("price").value),
-                    day: Number(document.getElementById("day").value),
-                    month: Number(document.getElementById("month").value),
-                    day_of_week: Number(document.getElementById("day_of_week").value)
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("result").innerText =
-                    "Predicted Quantity Sold: " + data.predicted_quantity_sold;
-            });
+    <!-- INPUTS -->
+    <label>💰 Price (₹)</label>
+    <input type="number" id="price">
+
+    <label>📅 Select Date</label>
+    <input type="date" id="date">
+
+    <button onclick="predict()">🔮 Predict Demand</button>
+
+    <!-- RESULT -->
+    <div class="result" id="result">Select product, price and date</div>
+
+    <!-- CHART -->
+    <div class="chart-box">
+        <canvas id="chart"></canvas>
+    </div>
+
+    <footer>
+        Random Forest · Flask API · ML Project
+    </footer>
+
+</div>
+
+<script>
+let selectedProduct = null;
+let selectedCategory = null;
+let demandChart = null;
+
+function selectProduct(el, pid, cat) {
+    document.querySelectorAll('.product')
+        .forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    selectedProduct = pid;
+    selectedCategory = cat;
+}
+
+function predict() {
+    const resultBox = document.getElementById("result");
+    resultBox.classList.remove("show");
+
+    if (!selectedProduct) {
+        resultBox.innerText = "⚠️ Select a product";
+        resultBox.classList.add("show");
+        return;
+    }
+
+    const price = document.getElementById("price").value;
+    const dateVal = document.getElementById("date").value;
+
+    if (!price || !dateVal) {
+        resultBox.innerText = "⚠️ Enter price and date";
+        resultBox.classList.add("show");
+        return;
+    }
+
+    const d = new Date(dateVal);
+    const payload = {
+        product_id: selectedProduct,
+        category: selectedCategory,
+        price: Number(price),
+        day: d.getDate(),
+        month: d.getMonth() + 1,
+        day_of_week: d.getDay() === 0 ? 6 : d.getDay() - 1
+    };
+
+    fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(r => r.json())
+    .then(data => {
+        const demand = data.predicted_quantity_sold;
+
+        let badgeText, badgeColor;
+        if (demand >= 50) {
+            badgeText = "🔴 High Demand";
+            badgeColor = "#ef5350";
+        } else if (demand >= 20) {
+            badgeText = "🟡 Medium Demand";
+            badgeColor = "#ffee58";
+        } else {
+            badgeText = "🟢 Low Demand";
+            badgeColor = "#66bb6a";
         }
-    </script>
+
+        resultBox.innerHTML = `
+            <div style="font-size:18px;">
+                📦 Predicted Demand: <b>${demand} units</b>
+            </div>
+            <div class="badge" style="background:${badgeColor};">
+                ${badgeText}
+            </div>
+        `;
+        resultBox.classList.add("show");
+
+        drawChart(demand);
+    });
+}
+
+function drawChart(value) {
+    const ctx = document.getElementById("chart").getContext("2d");
+
+    if (demandChart) demandChart.destroy();
+
+    demandChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Predicted Demand"],
+            datasets: [{
+                data: [value],
+                backgroundColor: "#4fc3f7",
+                borderRadius: 12
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: "#ffffff" },
+                    grid: { color: "#333" }
+                },
+                x: {
+                    ticks: { color: "#ffffff" },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+</script>
 
 </body>
 </html>
