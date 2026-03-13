@@ -1,341 +1,359 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>DemandSense AI</title>
+<meta charset="UTF-8">
+<title>DemandSense AI – Predict</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{box-sizing:border-box}
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+body{
+margin:0;
+min-height:100vh;
+background:radial-gradient(circle at top,#1f3c4a,#0b1c24);
+font-family:"Segoe UI",sans-serif;
+color:#e0e0e0;
+}
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: radial-gradient(circle at top, #1f3c4a, #0b1c24);
-            font-family: "Segoe UI", sans-serif;
-            color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 30px;
+background:#0f1f27;
+box-shadow:0 4px 10px rgba(0,0,0,.4)
+}
 
-        .app {
-            width: 480px;
-            background: #151515;
-            border-radius: 18px;
-            padding: 28px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
-        }
+.logo{
+font-size:20px;
+font-weight:bold;
+color:#4fc3f7
+}
 
-        h1 {
-            text-align: center;
-            margin: 0;
-            color: #4fc3f7;
-        }
+.nav-links a{
+color:#cfd8dc;
+margin-left:20px;
+text-decoration:none;
+font-size:14px
+}
 
-        .subtitle {
-            text-align: center;
-            margin: 6px 0 24px;
-            color: #9fb3bd;
-            font-size: 14px;
-        }
+.nav-links a:hover{
+color:#4fc3f7
+}
 
-        /* PRODUCTS */
-        .products {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+.app{
+width:560px;
+background:#151515;
+border-radius:18px;
+padding:28px;
+box-shadow:0 30px 60px rgba(0,0,0,.7);
+margin:40px auto
+}
 
-        .product {
-            background: #222;
-            border-radius: 14px;
-            padding: 14px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.25s ease;
-        }
+h1{
+text-align:center;
+margin:0;
+color:#4fc3f7
+}
 
-        .product:hover {
-            background: #2a2a2a;
-            transform: translateY(-4px) scale(1.03);
-        }
+.subtitle{
+text-align:center;
+margin:6px 0 22px;
+color:#9fb3bd;
+font-size:14px
+}
 
-        .product.active {
-            border-color: #4fc3f7;
-            background: #1c2c34;
-            animation: pop 0.25s ease;
-        }
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-bottom:16px
+}
 
-        .product span {
-            display: block;
-            font-size: 26px;
-            margin-bottom: 4px;
-        }
+.card{
+background:#222;
+border-radius:14px;
+padding:14px;
+text-align:center;
+cursor:pointer;
+border:2px solid transparent;
+transition:.25s
+}
 
-        /* INPUTS */
-        label {
-            font-size: 13px;
-            color: #b0bec5;
-            margin-top: 14px;
-            display: block;
-        }
+.card:hover{
+background:#2a2a2a;
+transform:translateY(-4px)
+}
 
-        input {
-            width: 100%;
-            margin-top: 6px;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            background: #262626;
-            color: white;
-            font-size: 14px;
-        }
+.card.active{
+border-color:#4fc3f7;
+background:#1c2c34
+}
 
-        button {
-            width: 100%;
-            margin-top: 22px;
-            padding: 14px;
-            border-radius: 14px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            color: #000;
-            background: linear-gradient(90deg, #4fc3f7, #29b6f6);
-            transition: transform 0.15s ease;
-        }
+.card span{
+font-size:26px;
+display:block;
+margin-bottom:4px
+}
 
-        button:active {
-            transform: scale(0.97);
-        }
+label{
+margin-top:14px;
+display:block;
+font-size:13px;
+color:#b0bec5
+}
 
-        /* RESULT */
-        .result {
-            margin-top: 22px;
-            padding: 14px;
-            background: #1f2a30;
-            border-radius: 14px;
-            text-align: center;
-            opacity: 0;
-        }
+input{
+width:100%;
+margin-top:6px;
+padding:10px;
+border-radius:10px;
+border:none;
+background:#262626;
+color:white
+}
 
-        .result.show {
-            animation: fadeIn 0.4s ease forwards;
-        }
+button{
+width:100%;
+margin-top:20px;
+padding:14px;
+border-radius:14px;
+border:none;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+background:linear-gradient(90deg,#4fc3f7,#29b6f6);
+color:#000
+}
 
-        .badge {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 13px;
-            color: #000;
-        }
+.result{
+margin-top:18px;
+padding:14px;
+background:#1f2a30;
+border-radius:14px;
+text-align:center
+}
 
-        /* CHART */
-        .chart-box {
-            margin-top: 22px;
-            background: #101010;
-            border-radius: 14px;
-            padding: 12px;
-            height: 260px;
-        }
+.chart-box{
+margin-top:18px;
+height:260px;
+background:#101010;
+border-radius:14px;
+padding:10px
+}
 
-        canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
+canvas{
+width:100%!important;
+height:100%!important
+}
+</style>
 
-        footer {
-            margin-top: 18px;
-            text-align: center;
-            font-size: 12px;
-            color: #8fa3ad;
-        }
-
-        /* ANIMATIONS */
-        @keyframes pop {
-            0% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
 </head>
 
 <body>
 
+<div class="navbar">
+<div class="logo">📊 DemandSense AI</div>
+
+<div class="nav-links">
+<a href="./dashboard.html">Dashboard</a>
+<a href="./index.html">Predict</a>
+<a href="./analytics.html">Analytics</a>
+<a href="./inventory.html">Inventory</a>
+<a href="./about.html">About</a>
+</div>
+</div>
+
 <div class="app">
 
-    <h1>📊 PRODUCT DEMAND</h1>
-    <div class="subtitle">Product-Aware Demand Forecasting</div>
+<h1>DemandSense AI</h1>
+<div class="subtitle">Category → Product Demand Forecasting</div>
 
-    <!-- PRODUCTS -->
-    <div class="products">
-        <div class="product" onclick="selectProduct(this,'P001','Electronics')"><span>📱</span>Phone</div>
-        <div class="product" onclick="selectProduct(this,'P001','Electronics')"><span>💻</span>Laptop</div>
-        <div class="product" onclick="selectProduct(this,'P001','Electronics')"><span>🎧</span>Audio</div>
+<div class="grid" id="categories">
 
-        <div class="product" onclick="selectProduct(this,'P002','Clothing')"><span>👕</span>T-Shirt</div>
-        <div class="product" onclick="selectProduct(this,'P002','Clothing')"><span>👟</span>Shoes</div>
-        <div class="product" onclick="selectProduct(this,'P002','Clothing')"><span>🧥</span>Jacket</div>
+<div class="card" onclick="selectCategory(this,'Electronics','P001')"><span>⚡</span>Electronics</div>
+<div class="card" onclick="selectCategory(this,'Clothing','P002')"><span>👗</span>Clothing</div>
+<div class="card" onclick="selectCategory(this,'Groceries','P003')"><span>🛒</span>Groceries</div>
+<div class="card" onclick="selectCategory(this,'Home','P004')"><span>🏠</span>Home</div>
+<div class="card" onclick="selectCategory(this,'Stationery','P005')"><span>📚</span>Stationery</div>
+<div class="card" onclick="selectCategory(this,'Sports','P006')"><span>⚽</span>Sports</div>
 
-        <div class="product" onclick="selectProduct(this,'P003','Groceries')"><span>🥦</span>Veggies</div>
-        <div class="product" onclick="selectProduct(this,'P003','Groceries')"><span>🥛</span>Milk</div>
-        <div class="product" onclick="selectProduct(this,'P003','Groceries')"><span>🍞</span>Bread</div>
-    </div>
+</div>
 
-    <!-- INPUTS -->
-    <label>💰 Price (₹)</label>
-    <input type="number" id="price">
+<div class="grid" id="products"></div>
 
-    <label>📅 Select Date</label>
-    <input type="date" id="date">
+<label>💰 Price (₹)</label> <input type="number" id="price" min="1" required>
 
-    <button onclick="predict()">🔮 Predict Demand</button>
+<label>📅 Select Date</label> <input type="date" id="date" required>
 
-    <!-- RESULT -->
-    <div class="result" id="result">Select product, price and date</div>
+<button onclick="predict()">🔮 Predict Demand</button>
 
-    <!-- CHART -->
-    <div class="chart-box">
-        <canvas id="chart"></canvas>
-    </div>
+<div class="result" id="result">
+Select category → product → enter details
+</div>
 
-    <footer>
-        Random Forest · Flask API · ML Project
-    </footer>
+<div class="chart-box">
+<canvas id="chart"></canvas>
+</div>
 
 </div>
 
 <script>
-let selectedProduct = null;
-let selectedCategory = null;
-let demandChart = null;
 
-function selectProduct(el, pid, cat) {
-    document.querySelectorAll('.product')
-        .forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
-    selectedProduct = pid;
-    selectedCategory = cat;
+const productMap={
+Electronics:["📱 Phone","💻 Laptop","🎧 Headphones","⌚ Smartwatch"],
+Clothing:["👕 T-Shirt","👟 Shoes","🧥 Jacket","👖 Jeans"],
+Groceries:["🥦 Vegetables","🥛 Milk","🍞 Bread","🍎 Fruits"],
+Home:["🪑 Chair","🛋️ Table","💡 Lamp","🌀 Fan"],
+Stationery:["📓 Notebook","🖊️ Pen","🎒 Backpack"],
+Sports:["⚽ Football","🏋️ Dumbbells","🧘 Yoga Mat"]
 }
 
-function predict() {
-    const resultBox = document.getElementById("result");
-    resultBox.classList.remove("show");
+let selectedCategory=null
+let selectedProductId=null
+let chart=null
 
-    if (!selectedProduct) {
-        resultBox.innerText = "⚠️ Select a product";
-        resultBox.classList.add("show");
-        return;
-    }
+function selectCategory(el,category,pid){
 
-    const price = document.getElementById("price").value;
-    const dateVal = document.getElementById("date").value;
+document.querySelectorAll('#categories .card')
+.forEach(c=>c.classList.remove('active'))
 
-    if (!price || !dateVal) {
-        resultBox.innerText = "⚠️ Enter price and date";
-        resultBox.classList.add("show");
-        return;
-    }
+el.classList.add('active')
 
-    const d = new Date(dateVal);
-    const payload = {
-        product_id: selectedProduct,
-        category: selectedCategory,
-        price: Number(price),
-        day: d.getDate(),
-        month: d.getMonth() + 1,
-        day_of_week: d.getDay() === 0 ? 6 : d.getDay() - 1
-    };
+selectedCategory=category
+selectedProductId=pid
 
-    fetch("http://127.0.0.1:5000/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-    })
-    .then(r => r.json())
-    .then(data => {
-        const demand = data.predicted_quantity_sold;
+const productDiv=document.getElementById("products")
+productDiv.innerHTML=""
 
-        let badgeText, badgeColor;
-        if (demand >= 50) {
-            badgeText = "🔴 High Demand";
-            badgeColor = "#ef5350";
-        } else if (demand >= 20) {
-            badgeText = "🟡 Medium Demand";
-            badgeColor = "#ffee58";
-        } else {
-            badgeText = "🟢 Low Demand";
-            badgeColor = "#66bb6a";
-        }
+productMap[category].forEach(p=>{
 
-        resultBox.innerHTML = `
-            <div style="font-size:18px;">
-                📦 Predicted Demand: <b>${demand} units</b>
-            </div>
-            <div class="badge" style="background:${badgeColor};">
-                ${badgeText}
-            </div>
-        `;
-        resultBox.classList.add("show");
+const card=document.createElement("div")
+card.className="card"
+card.innerHTML=`<span>${p.split(" ")[0]}</span>${p.slice(2)}`
 
-        drawChart(demand);
-    });
+card.onclick=()=>{
+document.querySelectorAll('#products .card')
+.forEach(c=>c.classList.remove('active'))
+card.classList.add('active')
 }
 
-function drawChart(value) {
-    const ctx = document.getElementById("chart").getContext("2d");
+productDiv.appendChild(card)
 
-    if (demandChart) demandChart.destroy();
+})
 
-    demandChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: ["Predicted Demand"],
-            datasets: [{
-                data: [value],
-                backgroundColor: "#4fc3f7",
-                borderRadius: 12
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: "#ffffff" },
-                    grid: { color: "#333" }
-                },
-                x: {
-                    ticks: { color: "#ffffff" },
-                    grid: { display: false }
-                }
-            }
-        }
-    });
 }
+
+function predict(){
+
+const price=Number(document.getElementById("price").value)
+const date=document.getElementById("date").value
+const result=document.getElementById("result")
+
+if(!selectedCategory||!price||!date){
+result.innerText="❌ Fill all details correctly"
+return
+}
+
+const d=new Date(date)
+
+fetch("http://127.0.0.1:5000/predict",{
+
+method:"POST",
+headers:{"Content-Type":"application/json"},
+
+body:JSON.stringify({
+product_id:selectedProductId,
+category:selectedCategory,
+price:price,
+day:d.getDate(),
+month:d.getMonth()+1,
+day_of_week:d.getDay()
+})
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+const demand=data.predicted_quantity_sold
+const level=data.demand_level
+
+let color
+
+if(level==="High") color="#ef5350"
+else if(level==="Medium") color="#ffee58"
+else color="#66bb6a"
+
+result.innerHTML=`
+<div style="font-size:18px">
+📦 Predicted Demand: <b>${demand} units</b>
+</div>
+
+<div style="margin-top:8px">
+Demand Level:
+<span style="background:${color};padding:5px 12px;border-radius:12px;color:#000;font-weight:bold">
+${level}
+</span>
+</div>
+`
+
+drawChart(demand)
+
+})
+
+.catch(()=>{
+result.innerText="❌ Backend not running"
+})
+
+}
+
+function drawChart(demand){
+
+if(chart) chart.destroy()
+
+const safetyStock=Math.round(demand*0.2)
+const stock=demand+safetyStock
+
+chart=new Chart(document.getElementById("chart"),{
+
+type:"bar",
+
+data:{
+labels:["Predicted Demand","Recommended Stock"],
+
+datasets:[{
+label:"Units",
+data:[demand,stock],
+backgroundColor:["#4fc3f7","#66bb6a"]
+}]
+},
+
+options:{
+maintainAspectRatio:false,
+plugins:{
+legend:{
+labels:{color:"#ffffff"}
+}
+},
+scales:{
+y:{
+beginAtZero:true,
+ticks:{color:"#ffffff"}
+},
+x:{
+ticks:{color:"#ffffff"}
+}
+}
+}
+
+})
+
+}
+
 </script>
 
 </body>

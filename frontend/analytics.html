@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DemandSense AI – Category Analytics</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1f3c4a, #0b1c24);
+            font-family: "Segoe UI", sans-serif;
+            color: #e0e0e0;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 30px;
+            background: #0f1f27;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+
+        .nav-links a {
+            color: #cfd8dc;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #4fc3f7;
+        }
+
+        /* MAIN */
+        .container {
+            padding: 30px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .sub {
+            color: #9fb3bd;
+            margin-bottom: 20px;
+        }
+
+        /* CARD */
+        .chart-card {
+            background: #151515;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .chart-container {
+            height: 360px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">📊 DemandSense AI</div>
+    <div class="nav-links">
+         <a href="./dashboard.html">Dashboard</a>
+        <a href="./index.html">Predict</a>
+        <a href="./analytics.html">Analytics</a>
+        <a href="./inventory.html">Inventory</a>
+        <a href="./about.html">About</a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+    <h1>Category-wise Demand Analytics</h1>
+    <div class="sub">
+        Visual comparison of predicted demand across product categories
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-container">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+const ctx = document.getElementById("categoryChart");
+
+new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: [
+            "Electronics",
+            "Clothing",
+            "Groceries",
+            "Home",
+            "Stationery",
+            "Sports"
+        ],
+        datasets: [{
+            label: "Average Demand",
+            data: [48, 32, 60, 28, 22, 35],
+            backgroundColor: [
+                "#4fc3f7",
+                "#81c784",
+                "#ffb74d",
+                "#ba68c8",
+                "#90a4ae",
+                "#e57373"
+            ],
+            borderRadius: 12
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: { color: "#ffffff" }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { color: "#ffffff" },
+                grid: { color: "#333" }
+            },
+            x: {
+                ticks: { color: "#ffffff" },
+                grid: { display: false }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

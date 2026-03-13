@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DemandSense AI – About</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #1f3c4a, #0b1c24);
+            font-family: "Segoe UI", sans-serif;
+            color: #e0e0e0;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 30px;
+            background: #0f1f27;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+
+        .nav-links a {
+            color: #cfd8dc;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #4fc3f7;
+        }
+
+        /* MAIN */
+        .container {
+            padding: 30px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #ffffff;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #4fc3f7;
+        }
+
+        p {
+            color: #cfd8dc;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: #151515;
+            border-radius: 18px;
+            padding: 26px;
+            margin-top: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        ul {
+            margin: 10px 0 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #cfd8dc;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #9fb3bd;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">📘 DemandSense AI</div>
+    <div class="nav-links">
+
+        <a href="./dashboard.html">Dashboard</a>
+        <a href="./index.html">Predict</a>
+        <a href="./analytics.html">Analytics</a>
+        <a href="./inventory.html">Inventory</a>
+        <a href="./about.html">About</a>
+</div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <h1>About the Project</h1>
+
+    <div class="card">
+        <h2>📌 Problem Statement</h2>
+        <p>
+            E-commerce platforms often struggle with inventory management due to unpredictable and fluctuating customer demand.
+            Poor demand estimation leads to overstocking or frequent stock shortages, resulting in financial losses and reduced
+            customer satisfaction. Traditional manual forecasting methods are insufficient to handle large-scale and dynamic sales data.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>💡 Proposed Solution</h2>
+        <p>
+            DemandSense AI is a machine learning-based demand forecasting system that predicts future product demand using historical
+            sales patterns and contextual inputs such as price and date. The system provides product-level predictions, category-wise
+            analytics, and actionable inventory recommendations through an interactive web interface.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>⚙️ System Architecture</h2>
+        <ul>
+            <li>User interacts with the web-based frontend</li>
+            <li>Frontend sends input data to Flask backend via REST API</li>
+            <li>Machine learning model processes inputs and predicts demand</li>
+            <li>Results are visualized using charts and dashboards</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🛠 Technology Stack</h2>
+        <ul>
+            <li><b>Frontend:</b> HTML, CSS, JavaScript, Chart.js</li>
+            <li><b>Backend:</b> Python, Flask</li>
+            <li><b>Machine Learning:</b> Random Forest Regressor (scikit-learn)</li>
+            <li><b>Tools:</b> VS Code, GitHub</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🎯 Applications & Impact</h2>
+        <ul>
+            <li>Improves inventory planning and stock optimization</li>
+            <li>Reduces losses due to overstocking and understocking</li>
+            <li>Supports data-driven decision-making in retail</li>
+            <li>Scalable for real-world e-commerce platforms</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>👩‍💻 Project Details</h2>
+        <ul>
+            <li><b>Project Type:</b> Machine Learning + Full Stack Web Application</li>
+            <li><b>Domain:</b> E-commerce Analytics</li>
+            <li><b>Academic Use:</b> Final Year / Mini Project</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        © 2026 DemandSense AI | Academic Project
+    </div>
+
+</div>
+
+</body>
+</html>
